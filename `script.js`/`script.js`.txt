@@ -1,0 +1,50 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const deck = createDeck();
+    let playerHand = [];
+
+    function createDeck() {
+        const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+        const numbers = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+        let deck = [];
+
+        suits.forEach(suit => {
+            numbers.forEach(number => {
+                deck.push({ number, suit });
+            });
+        });
+
+        return shuffle(deck);
+    }
+
+    function shuffle(deck) {
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+        return deck;
+    }
+
+    function drawCard() {
+        if (deck.length === 0) {
+            alert("No more cards in the deck!");
+            return;
+        }
+        const card = deck.pop();
+        playerHand.push(card);
+        renderHand();
+    }
+
+    function renderHand() {
+        const handContainer = document.getElementById('handCards');
+        handContainer.innerHTML = '';
+
+        playerHand.forEach(card => {
+            const cardDiv = document.createElement('div');
+            cardDiv.className = 'card';
+            cardDiv.textContent = `${card.number} ${card.suit}`;
+            handContainer.appendChild(cardDiv);
+        });
+    }
+
+    document.getElementById('drawCard').addEventListener('click', drawCard);
+});
